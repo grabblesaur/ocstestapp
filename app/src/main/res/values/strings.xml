@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">osctestapp</string>
+    <string name="no_connection">Отсутствует подключение к интернету</string>
+    <string name="unknown_error">Неизвестная ошибка</string>
+		<string name="city">City:</string>
+		<string name="job_type">Тип занятости:</string>
+		<string name="tools_desc">The code base is written in Native Java and a bit of Kotlin and our entire stack is up to date. Our main data store is GreenDAO but moving slowly to Firebase\'s Cloud Firestore. Our business is constantly growing and changing. New feature requests or requirement changes may emerge every day. As a result we build software that is highly maintainable and scalable to satisfy those needs.\\nYour job will be to work in small teams on independent projects alongside your non technical colleagues. You will analyze our business needs and implement solutions while maintaining a high quality standard and developing at startup speed. You will have the freedom to use any tools and resources to achieve your goals.</string>
+</resources>
