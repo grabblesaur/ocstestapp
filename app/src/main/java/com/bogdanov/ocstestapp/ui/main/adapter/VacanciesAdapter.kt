@@ -37,8 +37,14 @@ class VacanciesAdapter : RecyclerView.Adapter<VacanciesAdapter.CandidatesViewHol
         holder.onBind(mList[position])
     }
 
-    fun replace(vacancyList: MutableList<Vacancy>) {
-        mList = vacancyList
+    fun add(vacancyList: MutableList<Vacancy>) {
+        mList.clear()
+        mList.addAll(vacancyList)
+        notifyDataSetChanged()
+    }
+
+    fun setNew() {
+        mList = ArrayList()
         notifyDataSetChanged()
     }
 

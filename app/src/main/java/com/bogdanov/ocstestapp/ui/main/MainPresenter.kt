@@ -5,6 +5,7 @@ import com.bogdanov.ocstestapp.base.AbstractBasePresenter
 import com.bogdanov.ocstestapp.di.activity.ActivityScope
 import com.bogdanov.ocstestapp.domain.MainInteractor
 import com.bogdanov.ocstestapp.domain.Vacancy
+import io.reactivex.Observer
 import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -16,30 +17,30 @@ class MainPresenter @Inject constructor(val mainInteractor: MainInteractor) : Ab
 
     private val TAG = MainPresenter::class.java.simpleName
 
-    fun getData() {
-        getView()?.setProgressBar(true)
-        mainInteractor.getData()
+    fun getData(query: String?, page: Int) {
+        Log.i(TAG, "getData: query = $query page = $page")
+        mainInteractor.getData(query, page)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(object: SingleObserver<MutableList<Vacancy>> {
+            .subscribe(object: Observer<MutableList<Vacancy>> {
                 private var disposable: Disposable? = null
 
                 override fun onSubscribe(d: Disposable) {
                     disposable = d
                 }
 
-                override fun onSuccess(t: MutableList<Vacancy>) {
-                    Log.i(TAG, "onSuccess: ${t.size}")
-                    getView()?.showCandidates(t)
-                    getView()?.setProgressBar(false)
+                override fun onComplete() {
                     disposeCheck(disposable)
                 }
 
+                override fun onNext(t: MutableList<Vacancy>) {
+                    Log.i(TAG, "onNext: ${t.size}")
+                    getView()?.showCandidates(t)
+                }
 
                 override fun onError(e: Throwable) {
                     Log.e(TAG, "onError: $e")
                     getView()?.onError(e)
-                    getView()?.setProgressBar(false)
                     disposeCheck(disposable)
                 }
             })

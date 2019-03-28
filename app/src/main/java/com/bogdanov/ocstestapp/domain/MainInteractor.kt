@@ -8,15 +8,18 @@ import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
+import kotlin.collections.ArrayList
 
 class MainInteractor @Inject constructor(val mainRepository: MainRepository) {
 
-    fun getData() = mainRepository.getData()
-            .flatMap { list ->
-                        Observable.fromIterable(list)
-                                .map { mapToVacancy(it) }
-                                .toList()
-                    }
+    fun getData(query: String?, page: Int) = mainRepository.getData(query, page)
+        .map {
+            val vacancyList = ArrayList<Vacancy>()
+            for (vr in it) {
+                vacancyList.add(mapToVacancy(vr))
+            }
+            vacancyList
+        }
 
     private fun mapToVacancy(vr: VacancyResponse): Vacancy {
         val createdAt = getReadableDate(vr.createdAt)
@@ -25,7 +28,7 @@ class MainInteractor @Inject constructor(val mainRepository: MainRepository) {
                 id = vr.id,
                 type = vr.type,
                 url = vr.url,
-                createdAt = createdAt,
+                createdAt = getReadableDate(vr.createdAt),
                 company = vr.company,
                 location = vr.location,
                 companyUrl = vr.companyUrl,

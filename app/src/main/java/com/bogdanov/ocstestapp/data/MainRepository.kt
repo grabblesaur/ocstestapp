@@ -7,5 +7,6 @@ import io.reactivex.Single
 import javax.inject.Inject
 
 class MainRepository @Inject constructor(val apiService: Api) {
-    fun getData(): Single<ArrayList<VacancyResponse>> = apiService.getData("android", 0)
+    fun getData(query: String?, page: Int): Observable<ArrayList<VacancyResponse>> =
+        apiService.getData(query ?: "", page)
 }

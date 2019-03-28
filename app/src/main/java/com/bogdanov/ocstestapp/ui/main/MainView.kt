@@ -5,5 +5,4 @@ import com.bogdanov.ocstestapp.domain.Vacancy
 
 interface MainView : BaseView {
     fun showCandidates(vacancyList: MutableList<Vacancy>)
-    fun setProgressBar(flag: Boolean)
 }
