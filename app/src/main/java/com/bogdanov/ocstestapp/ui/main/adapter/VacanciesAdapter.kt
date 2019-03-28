@@ -5,7 +5,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bogdanov.ocstestapp.R
-import com.bogdanov.ocstestapp.data.api.model.Vacancy
+import com.bogdanov.ocstestapp.domain.Vacancy
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import kotlinx.android.synthetic.main.item_candidate.view.*
 
 class VacanciesAdapter : RecyclerView.Adapter<VacanciesAdapter.CandidatesViewHolder> {
@@ -14,10 +16,10 @@ class VacanciesAdapter : RecyclerView.Adapter<VacanciesAdapter.CandidatesViewHol
         fun onItemPress(vacancy: Vacancy)
     }
 
-    private var mList: ArrayList<Vacancy>
+    private var mList: MutableList<Vacancy>
     private var mListener: CandidatesAdapterListener?
 
-    constructor(list: ArrayList<Vacancy> = ArrayList(),
+    constructor(list: MutableList<Vacancy> = ArrayList(),
                 listener: CandidatesAdapterListener? = null) : super() {
         this.mList = list
         this.mListener = listener
@@ -35,18 +37,28 @@ class VacanciesAdapter : RecyclerView.Adapter<VacanciesAdapter.CandidatesViewHol
         holder.onBind(mList[position])
     }
 
-    fun replace(vacancies: ArrayList<Vacancy>) {
-        mList = vacancies
+    fun replace(vacancyList: MutableList<Vacancy>) {
+        mList = vacancyList
         notifyDataSetChanged()
     }
-
 
     inner class CandidatesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun onBind(vacancy: Vacancy) {
             itemView.itemLayout.setOnClickListener {
                 mListener?.onItemPress(vacancy)
             }
-            itemView.name.text = vacancy.title
+            itemView.companyNameTextView.text = vacancy.company
+            itemView.createdAtTextView.text = vacancy.createdAt
+            itemView.titleTextView.text = vacancy.title
+            itemView.locationTextView.text = vacancy.location
+            itemView.typeTextView.text = vacancy.type
+
+            if (vacancy.companyLogoUrl != null) {
+                Glide.with(itemView)
+                        .load(vacancy.companyLogoUrl)
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .into(itemView.companyLogoImageView)
+            }
         }
     }
 

@@ -2,9 +2,9 @@ package com.bogdanov.ocstestapp.ui.main
 
 import android.util.Log
 import com.bogdanov.ocstestapp.base.AbstractBasePresenter
-import com.bogdanov.ocstestapp.data.api.model.Vacancy
 import com.bogdanov.ocstestapp.di.activity.ActivityScope
 import com.bogdanov.ocstestapp.domain.MainInteractor
+import com.bogdanov.ocstestapp.domain.Vacancy
 import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -21,14 +21,14 @@ class MainPresenter @Inject constructor(val mainInteractor: MainInteractor) : Ab
         mainInteractor.getData()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(object: SingleObserver<ArrayList<Vacancy>> {
+            .subscribe(object: SingleObserver<MutableList<Vacancy>> {
                 private var disposable: Disposable? = null
 
                 override fun onSubscribe(d: Disposable) {
                     disposable = d
                 }
 
-                override fun onSuccess(t: ArrayList<Vacancy>) {
+                override fun onSuccess(t: MutableList<Vacancy>) {
                     Log.i(TAG, "onSuccess: ${t.size}")
                     getView()?.showCandidates(t)
                     getView()?.setProgressBar(false)

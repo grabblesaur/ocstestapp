@@ -4,9 +4,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bogdanov.ocstestapp.R
 import com.bogdanov.ocstestapp.base.AbstractBaseActivity
-import com.bogdanov.ocstestapp.data.api.model.Vacancy
+import com.bogdanov.ocstestapp.domain.Vacancy
 import com.bogdanov.ocstestapp.ui.detail.DetailActivity
 import com.bogdanov.ocstestapp.ui.main.adapter.VacanciesAdapter
 import kotlinx.android.synthetic.main.activity_main.*
@@ -34,8 +35,8 @@ class MainActivity : AbstractBaseActivity<MainView, MainPresenter>(), MainView {
         recylcerView.adapter = mAdapter
     }
 
-    override fun showCandidates(vacancies: ArrayList<Vacancy>) {
-        mAdapter.replace(vacancies)
+    override fun showCandidates(vacancyList: MutableList<Vacancy>) {
+        mAdapter.replace(vacancyList)
     }
 
     override fun setProgressBar(flag: Boolean) {
